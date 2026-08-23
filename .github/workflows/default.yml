@@ -1,25 +1,23 @@
-name: Build Minecraft Resource Pack
+name: Make Resource Pack Zip
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write # Built-in GITHUB_TOKEN has write permission automatically
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Create Clean Zip
+      - name: Zip Pack Contents Correctly
         run: |
-          # Zip contents of root directly, avoiding parent directory nesting
-          zip -r resourcepack.zip assets pack.mcmeta pack.png
-          
-      - name: Upload Artifact
+          # Zip files inside the workspace directly so assets/ and pack.mcmeta are at the root of the zip
+          zip -r minecraft-spotted-wolf.zip assets pack.mcmeta pack.png
+        
+      - name: Upload Zip Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: resourcepack
-          path: Striped Wolf Backport [1.11-1.12.2].zip
+          name: spotted-wolf-resource-pack
+          path: minecraft-spotted-wolf.zip
