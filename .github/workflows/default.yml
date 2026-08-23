@@ -1,0 +1,25 @@
+name: Build Minecraft Resource Pack
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Built-in GITHUB_TOKEN has write permission automatically
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Create Clean Zip
+        run: |
+          # Zip contents of root directly, avoiding parent directory nesting
+          zip -r resourcepack.zip assets pack.mcmeta pack.png
+          
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: resourcepack
+          path: Striped Wolf Backport [1.11-1.12.2].zip
